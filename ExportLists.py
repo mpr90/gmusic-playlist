@@ -3,9 +3,8 @@
 
 from common import *
 
-if len(sys.argv) < 2:
-    log('ERROR output directory is required')
-    time.sleep(3)
+if len(sys.argv) < 3:
+    log('ERROR output directory and oauth user key are required')
     exit()
 
 # setup the output directory, create it if needed
@@ -13,8 +12,10 @@ output_dir = sys.argv[1]
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
+user_key = sys.argv[2]
+
 # log in and load personal library
-api = open_api()
+api = open_api(user_key)
 library = load_personal_library()
 
 def playlist_handler(playlist_name, playlist_description, playlist_tracks):

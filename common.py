@@ -173,13 +173,13 @@ def create_details_string(details_dict, skip_id = False):
     return out_string
 
 # logs into google music api
-def open_api():
+def open_api(user_key):
     global api
     log('Logging into google music...')
     
     api = Mobileclient()
 
-    oAuthFile = "gMusic.oauth"
+    oAuthFile = user_key+".gMusic.oauth"
     if not os.path.isfile(oAuthFile):
         if not api.perform_oauth(oAuthFile, True):
             log('ERROR unable to perform authentication')

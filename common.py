@@ -176,15 +176,19 @@ def create_details_string(details_dict, skip_id = False):
 def open_api():
     global api
     log('Logging into google music...')
-    # get the password each time so that it isn't stored in plain text
-    password = getpass.getpass(username + '\'s password: ')
     
     api = Mobileclient()
-    if not api.login(username, password, Mobileclient.FROM_MAC_ADDRESS):
-        log('ERROR unable to login')
-        time.sleep(3)
+
+    oAuthFile = "gMusic.oauth"
+    if not os.path.isfile(oAuthFile):
+        if not api.perform_oauth(oAuthFile, True):
+            log('ERROR unable to perform authentication')
+            exit()
+
+    if not api.oauth_login(Mobileclient.FROM_MAC_ADDRESS, oAuthFile):
+        log('ERROR unable to login using oauth token')
         exit()
-        
+    
     password = None
     log('Login Successful.')
     dlog(u'Available track details: '+str(get_google_track_details()))

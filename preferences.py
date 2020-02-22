@@ -1,7 +1,4 @@
 
-# the username to use
-username = 'john.elkins@gmail.com'
-
 # the separator to use for detailed track information
 track_info_separator = u','
 #track_info_separator = u'\\'
@@ -41,7 +38,7 @@ search_title_only = True
 log_high_matches = False
 
 # export "Thumbs Up" playlist
-export_thumbs_up = True
+export_thumbs_up = False
 
 # export "ALL" playlist
-export_all = True
+export_all = False

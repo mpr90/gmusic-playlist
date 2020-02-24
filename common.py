@@ -61,8 +61,10 @@ def open_log(filename):
 
 # closes the log
 def close_log():
+    global logfile
     if logfile:
         logfile.close()
+    logfile = None
 
 # logs to both the console and log file if it exists
 def log(message, nl = True):
@@ -173,13 +175,13 @@ def create_details_string(details_dict, skip_id = False):
     return out_string
 
 # logs into google music api
-def open_api(user_key):
+def open_api(oauth_file_prefix):
     global api
     log('Logging into google music...')
     
     api = Mobileclient()
 
-    oAuthFile = user_key+".gMusic.oauth"
+    oAuthFile = oauth_file_prefix+".gMusic.oauth"
     if not os.path.isfile(oAuthFile):
         if not api.perform_oauth(oAuthFile, True):
             log('ERROR unable to perform authentication')

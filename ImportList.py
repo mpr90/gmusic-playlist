@@ -1,5 +1,12 @@
 # Author: John Elkins <john.elkins@yahoo.com>
 # License: MIT <LICENSE>
+#
+# Usage: python ImportList.py playlist_file_name oauth_file_prefix [playlist_prefix]
+#
+# Authenticates using oauth from stored crentials in oauth_file_prefix+".gMusic.oauth"
+# Imports playlist from playlist_file_name into a playlist of the same name optionally
+# with playlist_prefix prepended on the playlist name
+#
 
 import re
 import datetime
@@ -163,8 +170,8 @@ def score_track(details,result_details,top_score = 200):
     return (result_score,score_reason)
 
 # check to make sure a filename was given
-if len(sys.argv) < 2:
-    delayed_exit(u'ERROR input filename is required')
+if len(sys.argv) < 3:
+    delayed_exit(u'ERROR input filename and oauth user key are required, optional third argument to prefix created playlist names')
 
 
 # setup the input and output filenames and derive the playlist name
@@ -178,6 +185,15 @@ output_filename += u'_' + unicode(datetime.datetime.now().strftime(
 log_filename = output_filename + u'.log'
 csv_filename = output_filename + u'.csv'
 
+# The oauth file prefix to use for storing credentials
+oauth_file_prefix = sys.argv[2]
+
+# The optional name to prepend to each created playlist
+if len(sys.argv) > 2:
+    playlist_prefix = unicode(sys.argv[3]) + u' '
+else:
+    playlist_prefix = u''
+
 #open the log and output csv files
 csvfile = codecs.open(csv_filename, encoding='utf-8', mode='w', buffering=1)
 open_log(log_filename)
@@ -190,7 +206,7 @@ with codecs.open(input_filename, encoding='utf-8', mode='r', errors='ignore') as
 log('done. '+str(len(tracks))+' lines loaded.')
 
 # log in and load personal library
-api = open_api()
+api = open_api(oauth_file_prefix)
 library = load_personal_library()
 
 # begin searching for the tracks
@@ -301,7 +317,7 @@ current_playlist = 1
 total_playlists_needed = int(math.ceil(len(song_ids)/float(max_playlist_size)))
 while current_playlist <= total_playlists_needed:
     # build the playlist name, add part number if needed
-    current_playlist_name = playlist_name
+    current_playlist_name = playlist_prefix+playlist_name
     if total_playlists_needed > 1:
         current_playlist_name += u' Part ' + unicode(current_playlist)
 

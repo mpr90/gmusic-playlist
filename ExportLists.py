@@ -1,5 +1,11 @@
 # Author: John Elkins <john.elkins@yahoo.com>
 # License: MIT <LICENSE>
+#
+# Usage: python ExportLists.py folder_name oauth_file_prefix
+#
+# Authenticates using oauth from stored crentials in oauth_file_prefix+".gMusic.oauth"
+# Exports all user's playlists into folder_name as .CSV files
+#
 
 from common import *
 
@@ -12,10 +18,10 @@ output_dir = sys.argv[1]
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
-user_key = sys.argv[2]
+oauth_file_prefix = sys.argv[2]
 
 # log in and load personal library
-api = open_api(user_key)
+api = open_api(oauth_file_prefix)
 library = load_personal_library()
 
 def playlist_handler(playlist_name, playlist_description, playlist_tracks):
@@ -50,7 +56,7 @@ def playlist_handler(playlist_name, playlist_description, playlist_tracks):
     for tnum, pl_track in enumerate(playlist_tracks):
         track = pl_track.get('track')
 
-        # we need to look up these track in the library
+        # Check if we need to look up these tracks in the library
         if not track:
             library_track = [
                 item for item in library if item.get('id')

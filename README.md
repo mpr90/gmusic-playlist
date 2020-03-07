@@ -51,3 +51,4 @@ A comment in a playlist file follows the form of Ccomment where C is the separat
 ## see also 
 
 [a javascript version](https://github.com/soulfx/gmusic-playlist.js) for doing import / export directly within google music.
+https://python.hotexamples.com/examples/gmusicapi/Musicmanager/perform_oauth/python-musicmanager-perform_oauth-method-examples.html
